@@ -39,7 +39,7 @@ class PropertyListSerializer(serializers.ModelSerializer):
             "bedrooms",
             "bathrooms",
             "size",
-            "is_available",
+            "status",
             "updated_at",
         ]
 
@@ -67,7 +67,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "bedrooms",
             "bathrooms",
             "size",
-            "is_available",
+            "status",
             "created_at",
             "updated_at",
         ]

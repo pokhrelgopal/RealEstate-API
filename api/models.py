@@ -25,6 +25,11 @@ class Property(models.Model):
         choices=PROPERTY_TYPE_CHOICES,
         default="house",
     )
+    status = models.CharField(
+        max_length=10,
+        choices=PROPERTY_STATUS_CHOICES,
+        default="available",
+    )
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
@@ -32,7 +37,6 @@ class Property(models.Model):
     bedrooms = models.IntegerField(null=True, blank=True)
     bathrooms = models.IntegerField(null=True, blank=True)
     size = models.DecimalField(max_digits=10, decimal_places=2)
-    is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
