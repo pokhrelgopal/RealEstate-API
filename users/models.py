@@ -31,6 +31,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+
+    USER_TYPE_CHOICES = [("agent", "Agent"), ("buyer", "Buyer"), ("seller", "Seller")]
+
     email = models.EmailField(
         verbose_name="email address",
         max_length=255,
@@ -38,9 +41,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    user_type = models.CharField(
+        max_length=10,
+        choices=USER_TYPE_CHOICES,
+        default="buyer",
+    )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_suspended = models.BooleanField(default=False)
+    is_banned = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
 
     USERNAME_FIELD = "email"

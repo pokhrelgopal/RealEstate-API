@@ -45,7 +45,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # !
-    "api.middleware.logging_middleware.LoggingMiddleware",
+    "api.middlewares.middleware.LoggingMiddleware",
+    "api.middlewares.middleware.OnlyAdminMiddleware",
 ]
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),

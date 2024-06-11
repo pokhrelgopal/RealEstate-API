@@ -9,6 +9,32 @@
         "documentation": {}
     },
     {
+        "label": "JsonResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
         "label": "admin",
         "importPath": "django.contrib",
         "description": "django.contrib",
@@ -46,6 +72,22 @@
         "description": "django.apps",
         "isExtraImport": true,
         "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
         "documentation": {}
     },
     {
@@ -250,6 +292,15 @@
         "documentation": {}
     },
     {
+        "label": "django.utils.timezone",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.utils.timezone",
+        "description": "django.utils.timezone",
+        "detail": "django.utils.timezone",
+        "documentation": {}
+    },
+    {
         "label": "BaseUserManager",
         "importPath": "django.contrib.auth.models",
         "description": "django.contrib.auth.models",
@@ -274,11 +325,11 @@
         "documentation": {}
     },
     {
-        "label": "TokenObtainPairSerializer",
-        "importPath": "rest_framework_simplejwt.serializers",
-        "description": "rest_framework_simplejwt.serializers",
+        "label": "permissions",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
         "isExtraImport": true,
-        "detail": "rest_framework_simplejwt.serializers",
+        "detail": "rest_framework",
         "documentation": {}
     },
     {
@@ -295,6 +346,14 @@
         "description": "rest_framework",
         "isExtraImport": true,
         "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "TokenObtainPairSerializer",
+        "importPath": "rest_framework_simplejwt.serializers",
+        "description": "rest_framework_simplejwt.serializers",
+        "isExtraImport": true,
+        "detail": "rest_framework_simplejwt.serializers",
         "documentation": {}
     },
     {
@@ -319,6 +378,14 @@
         "description": "rest_framework.permissions",
         "isExtraImport": true,
         "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "PermissionDenied",
+        "importPath": "rest_framework.exceptions",
+        "description": "rest_framework.exceptions",
+        "isExtraImport": true,
+        "detail": "rest_framework.exceptions",
         "documentation": {}
     },
     {
@@ -357,10 +424,19 @@
     {
         "label": "LoggingMiddleware",
         "kind": 6,
-        "importPath": "api.middleware.logging_middleware",
-        "description": "api.middleware.logging_middleware",
-        "peekOfCode": "class LoggingMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n    def __call__(self, request):\n        start_time = time.time()\n        response = self.get_response(request)\n        print(request.method, request.path, time.time() - start_time, request.user)\n        end_time = time.time()\n        duration = end_time - start_time\n        with open(\"api/middleware/log.txt\", \"a\") as file:",
-        "detail": "api.middleware.logging_middleware",
+        "importPath": "api.middlewares.middleware",
+        "description": "api.middlewares.middleware",
+        "peekOfCode": "class LoggingMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n    def __call__(self, request):\n        start_time = time.time()\n        response = self.get_response(request)\n        end_time = time.time()\n        duration = end_time - start_time\n        with open(\"api/middlewares/requests.log\", \"a\") as file:\n            file.write(",
+        "detail": "api.middlewares.middleware",
+        "documentation": {}
+    },
+    {
+        "label": "OnlyAdminMiddleware",
+        "kind": 6,
+        "importPath": "api.middlewares.middleware",
+        "description": "api.middlewares.middleware",
+        "peekOfCode": "class OnlyAdminMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n    def __call__(self, request):\n        \"\"\"\n        If user is not a superuser or staff and tries to access endpoints under /api/v1/admin/*,\n        return 403 Forbidden.\n        \"\"\"\n        if re.match(r\"^/api/v1/admin/\", request.path):\n            if not request.user.is_authenticated or not (",
+        "detail": "api.middlewares.middleware",
         "documentation": {}
     },
     {
@@ -652,6 +728,15 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "users.migrations.0003_user_created_at_user_is_banned_user_is_suspended_and_more",
+        "description": "users.migrations.0003_user_created_at_user_is_banned_user_is_suspended_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        (\"users\", \"0002_alter_user_first_name_alter_user_last_name\"),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name=\"user\",\n            name=\"created_at\",\n            field=models.DateTimeField(\n                auto_now_add=True, default=django.utils.timezone.now",
+        "detail": "users.migrations.0003_user_created_at_user_is_banned_user_is_suspended_and_more",
+        "documentation": {}
+    },
+    {
         "label": "UsersConfig",
         "kind": 6,
         "importPath": "users.apps",
@@ -674,8 +759,17 @@
         "kind": 6,
         "importPath": "users.models",
         "description": "users.models",
-        "peekOfCode": "class User(AbstractBaseUser, PermissionsMixin):\n    email = models.EmailField(\n        verbose_name=\"email address\",\n        max_length=255,\n        unique=True,\n    )\n    first_name = models.CharField(max_length=100)\n    last_name = models.CharField(max_length=100)\n    is_active = models.BooleanField(default=True)\n    is_staff = models.BooleanField(default=False)",
+        "peekOfCode": "class User(AbstractBaseUser, PermissionsMixin):\n    USER_TYPE_CHOICES = [(\"agent\", \"Agent\"), (\"buyer\", \"Buyer\"), (\"seller\", \"Seller\")]\n    email = models.EmailField(\n        verbose_name=\"email address\",\n        max_length=255,\n        unique=True,\n    )\n    first_name = models.CharField(max_length=100)\n    last_name = models.CharField(max_length=100)\n    phone_number = models.CharField(max_length=15, blank=True, null=True)",
         "detail": "users.models",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminOrSelf",
+        "kind": 6,
+        "importPath": "users.permissions",
+        "description": "users.permissions",
+        "peekOfCode": "class IsAdminOrSelf(permissions.BasePermission):\n    def has_object_permission(self, request, view, obj):\n        return obj == request.user or request.user.is_staff",
+        "detail": "users.permissions",
         "documentation": {}
     },
     {
@@ -683,7 +777,7 @@
         "kind": 6,
         "importPath": "users.serializers",
         "description": "users.serializers",
-        "peekOfCode": "class MyTokenObtainPairSerializer(TokenObtainPairSerializer):\n    @classmethod\n    def get_token(cls, user):\n        token = super().get_token(user)\n        token[\"email\"] = user.email\n        return token\nclass UserSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = User\n        fields = [",
+        "peekOfCode": "class MyTokenObtainPairSerializer(TokenObtainPairSerializer):\n    @classmethod\n    def get_token(cls, user):\n        token = super().get_token(user)\n        token[\"email\"] = user.email\n        return token\nclass UserSerializer(serializers.ModelSerializer):\n    password = serializers.CharField(write_only=True)\n    class Meta:\n        model = User",
         "detail": "users.serializers",
         "documentation": {}
     },
@@ -692,7 +786,7 @@
         "kind": 6,
         "importPath": "users.serializers",
         "description": "users.serializers",
-        "peekOfCode": "class UserSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = User\n        fields = [\n            \"id\",\n            \"email\",\n            \"password\",\n            \"first_name\",\n            \"last_name\",\n        ]",
+        "peekOfCode": "class UserSerializer(serializers.ModelSerializer):\n    password = serializers.CharField(write_only=True)\n    class Meta:\n        model = User\n        fields = [\n            \"id\",\n            \"email\",\n            \"password\",\n            \"first_name\",\n            \"last_name\",",
         "detail": "users.serializers",
         "documentation": {}
     },
@@ -701,7 +795,7 @@
         "kind": 5,
         "importPath": "users.urls",
         "description": "users.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"\", UserViewSet, basename=\"user\")\nurlpatterns = [\n    path(\"token/\", TokenObtainPairView.as_view(), name=\"token_obtain_pair\"),\n    path(\"token/refresh/\", TokenRefreshView.as_view(), name=\"token_refresh\"),\n]\nurlpatterns += router.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(\n    \"\",\n    UserViewSet,\n    basename=\"user\",\n)\nurlpatterns = [\n    path(\"token/\", TokenObtainPairView.as_view(), name=\"token_obtain_pair\"),\n    path(\"token/refresh/\", TokenRefreshView.as_view(), name=\"token_refresh\"),\n]",
         "detail": "users.urls",
         "documentation": {}
     },
