@@ -4,7 +4,8 @@ from .views import *
 
 router = DefaultRouter()
 
-# router.register(r"users", UserViewSet, basename="users")
+router.register(r"agents", AgentViewSet, basename="agents")
+router.register(r"properties", PropertyViewSet, basename="properties")
 
 urlpatterns = []
 
