@@ -1,19 +1,43 @@
 [
     {
+        "label": "JsonResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
         "label": "time",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "time",
         "description": "time",
         "detail": "time",
-        "documentation": {}
-    },
-    {
-        "label": "JsonResponse",
-        "importPath": "django.http",
-        "description": "django.http",
-        "isExtraImport": true,
-        "detail": "django.http",
         "documentation": {}
     },
     {
@@ -26,12 +50,11 @@
         "documentation": {}
     },
     {
-        "label": "math",
-        "kind": 6,
+        "label": "BASE_DIR",
+        "importPath": "core.settings",
+        "description": "core.settings",
         "isExtraImport": true,
-        "importPath": "math",
-        "description": "math",
-        "detail": "math",
+        "detail": "core.settings",
         "documentation": {}
     },
     {
@@ -44,19 +67,19 @@
         "documentation": {}
     },
     {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
         "isExtraImport": true,
-        "detail": "django.conf",
+        "detail": "django.db",
         "documentation": {}
     },
     {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
         "isExtraImport": true,
-        "detail": "django.conf",
+        "detail": "django.db",
         "documentation": {}
     },
     {
@@ -539,7 +562,7 @@
         "kind": 6,
         "importPath": "api.middlewares.middleware",
         "description": "api.middlewares.middleware",
-        "peekOfCode": "class LoggingMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n    def __call__(self, request):\n        start_time = time.time()\n        response = self.get_response(request)\n        end_time = time.time()\n        duration = end_time - start_time\n        with open(\"api/middlewares/requests.log\", \"a\") as file:\n            file.write(",
+        "peekOfCode": "class LoggingMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n    def __call__(self, request):\n        start_time = time.time()\n        response = self.get_response(request)\n        end_time = time.time()\n        duration = end_time - start_time\n        x_forwarded_for = request.META.get(\"HTTP_X_FORWARDED_FOR\")\n        if x_forwarded_for:",
         "detail": "api.middlewares.middleware",
         "documentation": {}
     },
@@ -571,6 +594,15 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "api.migrations.0003_property_thumbnail_propertyimage",
+        "description": "api.migrations.0003_property_thumbnail_propertyimage",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        (\"api\", \"0002_remove_property_is_available_property_status\"),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name=\"property\",\n            name=\"thumbnail\",\n            field=models.ImageField(\n                blank=True,",
+        "detail": "api.migrations.0003_property_thumbnail_propertyimage",
+        "documentation": {}
+    },
+    {
         "label": "ApiConfig",
         "kind": 6,
         "importPath": "api.apps",
@@ -585,6 +617,15 @@
         "importPath": "api.models",
         "description": "api.models",
         "peekOfCode": "class Property(models.Model):\n    PROPERTY_TYPE_CHOICES = [\n        (\"house\", \"House\"),\n        (\"apartment\", \"Apartment\"),\n        (\"land\", \"Land\"),\n        (\"commercial\", \"Commercial\"),\n    ]\n    PROPERTY_STATUS_CHOICES = [\n        (\"available\", \"Available\"),\n        (\"sold\", \"Sold\"),",
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "PropertyImage",
+        "kind": 6,
+        "importPath": "api.models",
+        "description": "api.models",
+        "peekOfCode": "class PropertyImage(models.Model):\n    property = models.ForeignKey(\n        Property, on_delete=models.CASCADE, related_name=\"images\"\n    )\n    image = models.ImageField(upload_to=\"property_images/\")\n    created_at = models.DateTimeField(auto_now_add=True)\n    def __str__(self):\n        return self.property.title\n    class Meta:\n        db_table = \"property_image\"",
         "detail": "api.models",
         "documentation": {}
     },
@@ -607,6 +648,15 @@
         "documentation": {}
     },
     {
+        "label": "ImageSerializer",
+        "kind": 6,
+        "importPath": "api.serializers",
+        "description": "api.serializers",
+        "peekOfCode": "class ImageSerializer(serializers.ModelSerializer):\n    property_id = serializers.PrimaryKeyRelatedField(\n        queryset=Property.objects.all(), source=\"property\", write_only=True\n    )\n    class Meta:\n        model = PropertyImage\n        fields = [\"id\", \"image\", \"property_id\"]\nclass PropertyListSerializer(serializers.ModelSerializer):\n    user = UserSerializer(read_only=True)\n    class Meta:",
+        "detail": "api.serializers",
+        "documentation": {}
+    },
+    {
         "label": "PropertyListSerializer",
         "kind": 6,
         "importPath": "api.serializers",
@@ -620,7 +670,7 @@
         "kind": 6,
         "importPath": "api.serializers",
         "description": "api.serializers",
-        "peekOfCode": "class PropertySerializer(serializers.ModelSerializer):\n    user = UserSerializer(read_only=True)\n    user_id = serializers.PrimaryKeyRelatedField(\n        queryset=Property.objects.all(), source=\"user\", write_only=True\n    )\n    class Meta:\n        model = Property\n        fields = [\n            \"id\",\n            \"user\",",
+        "peekOfCode": "class PropertySerializer(serializers.ModelSerializer):\n    user = UserSerializer(read_only=True)\n    user_id = serializers.PrimaryKeyRelatedField(\n        queryset=Property.objects.all(), source=\"user\", write_only=True\n    )\n    images = ImageSerializer(many=True, read_only=True)\n    class Meta:\n        model = Property\n        fields = [\n            \"id\",",
         "detail": "api.serializers",
         "documentation": {}
     },
@@ -629,7 +679,7 @@
         "kind": 5,
         "importPath": "api.urls",
         "description": "api.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"agents\", AgentViewSet, basename=\"agents\")\nrouter.register(r\"properties\", PropertyViewSet, basename=\"properties\")\nurlpatterns = []\nurlpatterns += router.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"agents\", AgentViewSet, basename=\"agents\")\nrouter.register(r\"properties\", PropertyViewSet, basename=\"properties\")\nrouter.register(r\"images\", ImageViewSet, basename=\"images\")\nurlpatterns = []\nurlpatterns += router.urls",
         "detail": "api.urls",
         "documentation": {}
     },
@@ -657,6 +707,15 @@
         "importPath": "api.views",
         "description": "api.views",
         "peekOfCode": "class PropertyViewSet(ModelViewSet):\n    queryset = Property.objects.select_related(\"user\").all()\n    serializer_class = PropertySerializer\n    permission_classes = [IsAuthenticated]\n    def get_permissions(self):\n        if self.action == \"list\" or self.action == \"retrieve\":\n            self.permission_classes = []\n        return super().get_permissions()\n    def get_serializer_class(self):\n        if self.action == \"list\":",
+        "detail": "api.views",
+        "documentation": {}
+    },
+    {
+        "label": "ImageViewSet",
+        "kind": 6,
+        "importPath": "api.views",
+        "description": "api.views",
+        "peekOfCode": "class ImageViewSet(ModelViewSet):\n    queryset = PropertyImage.objects.all()\n    serializer_class = ImageSerializer\n    # ! LIST RETRIEVE and UPDATE are forbidden because images will only be shown in the property detail view.\n    def list(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_403_FORBIDDEN, data={\"detail\": \"Forbidden.\"})\n    def retrieve(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_403_FORBIDDEN, data={\"detail\": \"Forbidden.\"})\n    def update(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_403_FORBIDDEN, data={\"detail\": \"Forbidden.\"})",
         "detail": "api.views",
         "documentation": {}
     },

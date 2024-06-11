@@ -1,9 +1,14 @@
-from .serializers import AgentSerializer, PropertySerializer, PropertyListSerializer
+from .serializers import (
+    AgentSerializer,
+    PropertySerializer,
+    PropertyListSerializer,
+    ImageSerializer,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Property, Agent
+from .models import Property, Agent, PropertyImage
 from rest_framework import status
 from django.db.models import Q
 
@@ -22,13 +27,13 @@ class AgentViewSet(ModelViewSet):
         agent = self.get_object()
         if request.user.is_superuser or request.user == agent.user:
             return super().update(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
 
     def destroy(self, request, *args, **kwargs):
         agent = self.get_object()
         if request.user.is_superuser or request.user == agent.user:
             return super().destroy(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
 
 
 class PropertyViewSet(ModelViewSet):
@@ -50,13 +55,13 @@ class PropertyViewSet(ModelViewSet):
         property = self.get_object()
         if request.user.is_superuser or request.user == property.user:
             return super().update(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
 
     def destroy(self, request, *args, **kwargs):
         property = self.get_object()
         if request.user.is_superuser or request.user == property.user:
             return super().destroy(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
 
     @action(detail=False, methods=["GET"])
     def search(self, request):
@@ -82,3 +87,42 @@ class PropertyViewSet(ModelViewSet):
         properties = Property.objects.filter(filters)
         serializer = PropertyListSerializer(properties, many=True)
         return Response(serializer.data)
+
+
+class ImageViewSet(ModelViewSet):
+    queryset = PropertyImage.objects.all()
+    serializer_class = ImageSerializer
+
+    # ! LIST RETRIEVE and UPDATE are forbidden because images will only be shown in the property detail view.
+    def list(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
+
+    def update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
+
+    def destroy(self, request, *args, **kwargs):
+        image = self.get_object()
+        if request.user.is_superuser or request.user == image.property.user:
+            return super().destroy(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
+
+    # ? User can add image to property only if they are the owner of the property.
+    def create(self, request, *args, **kwargs):
+        property_id = request.data.get("property_id")
+        if not property_id:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"property_id": "This field is required."},
+            )
+        property = Property.objects.get(pk=request.data.get("property_id"))
+        if request.user == property.user:
+            return super().create(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
+
+    def get_permissions(self):
+        if self.action == "create" or self.action == "destroy":
+            self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()

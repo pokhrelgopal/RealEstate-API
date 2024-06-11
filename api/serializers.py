@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Property, Agent
+from .models import Property, Agent, PropertyImage
 from users.serializers import UserSerializer
 
 
@@ -22,6 +22,16 @@ class AgentSerializer(serializers.ModelSerializer):
         ]
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    property_id = serializers.PrimaryKeyRelatedField(
+        queryset=Property.objects.all(), source="property", write_only=True
+    )
+
+    class Meta:
+        model = PropertyImage
+        fields = ["id", "image", "property_id"]
+
+
 class PropertyListSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
@@ -33,6 +43,7 @@ class PropertyListSerializer(serializers.ModelSerializer):
             "title",
             "price",
             "property_type",
+            "thumbnail",
             "address",
             "city",
             "state",
@@ -49,6 +60,7 @@ class PropertySerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
         queryset=Property.objects.all(), source="user", write_only=True
     )
+    images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Property
@@ -70,4 +82,5 @@ class PropertySerializer(serializers.ModelSerializer):
             "status",
             "created_at",
             "updated_at",
+            "images",
         ]

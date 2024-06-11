@@ -1,7 +1,8 @@
-import time
 from django.http import JsonResponse
+from django.conf import settings
+import time
 import re
-import math
+from core.settings import BASE_DIR
 
 
 class LoggingMiddleware:
@@ -15,10 +16,21 @@ class LoggingMiddleware:
         end_time = time.time()
         duration = end_time - start_time
 
-        with open("api/middlewares/requests.log", "a") as file:
-            file.write(
-                f"{request.user} {request.method} {request.path} {duration} {response.status_code}\n"
-            )
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
+        else:
+            ip = request.META.get("REMOTE_ADDR")
+
+        with open(f"{settings.BASE_DIR}/requests.log", "a") as file:
+            if not request.user.is_authenticated:
+                file.write(
+                    f"IP: {ip} {request.user} {request.method} {request.path} {duration:.2f} {response.status_code}\n"
+                )
+            else:
+                file.write(
+                    f"{request.user} {request.method} {request.path} {duration:.2f} {response.status_code}\n"
+                )
 
         return response
 

@@ -6,6 +6,7 @@ router = DefaultRouter()
 
 router.register(r"agents", AgentViewSet, basename="agents")
 router.register(r"properties", PropertyViewSet, basename="properties")
+router.register(r"images", ImageViewSet, basename="images")
 
 urlpatterns = []
 
