@@ -73,6 +73,10 @@ You can view all endpoints in main page i.e localhost:8000
    }
    ```
 
+   ```bash
+     I have kept .env file as public so you can look how i have my environment variables
+   ```
+
 5. **Apply migrations:**
 
    ```bash
