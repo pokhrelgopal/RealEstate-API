@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Property, Agent, PropertyImage
+from api.models import Property, Agent, PropertyImage
 from users.serializers import UserSerializer
 
 

@@ -203,6 +203,78 @@
         "documentation": {}
     },
     {
+        "label": "Agent",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "Property",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "PropertyImage",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "Property",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "Agent",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "PropertyImage",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "Property",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "Agent",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
+        "label": "PropertyImage",
+        "importPath": "api.models",
+        "description": "api.models",
+        "isExtraImport": true,
+        "detail": "api.models",
+        "documentation": {}
+    },
+    {
         "label": "AppConfig",
         "importPath": "django.apps",
         "description": "django.apps",
@@ -216,6 +288,30 @@
         "description": "django.apps",
         "isExtraImport": true,
         "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "users.models",
+        "description": "users.models",
+        "isExtraImport": true,
+        "detail": "users.models",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "users.models",
+        "description": "users.models",
+        "isExtraImport": true,
+        "detail": "users.models",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "users.models",
+        "description": "users.models",
+        "isExtraImport": true,
+        "detail": "users.models",
         "documentation": {}
     },
     {
@@ -264,6 +360,14 @@
         "description": "rest_framework",
         "isExtraImport": true,
         "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "UserSerializer",
+        "importPath": "users.serializers",
+        "description": "users.serializers",
+        "isExtraImport": true,
+        "detail": "users.serializers",
         "documentation": {}
     },
     {
@@ -339,35 +443,43 @@
         "documentation": {}
     },
     {
-        "label": "IsAuthenticated",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
+        "label": "*",
+        "importPath": "api.views",
+        "description": "api.views",
         "isExtraImport": true,
-        "detail": "rest_framework.permissions",
+        "detail": "api.views",
         "documentation": {}
     },
     {
-        "label": "SAFE_METHODS",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
+        "label": "AgentSerializer",
+        "importPath": "api.serializers",
+        "description": "api.serializers",
         "isExtraImport": true,
-        "detail": "rest_framework.permissions",
+        "detail": "api.serializers",
         "documentation": {}
     },
     {
-        "label": "IsAuthenticated",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
+        "label": "PropertySerializer",
+        "importPath": "api.serializers",
+        "description": "api.serializers",
         "isExtraImport": true,
-        "detail": "rest_framework.permissions",
+        "detail": "api.serializers",
         "documentation": {}
     },
     {
-        "label": "IsAdminUser",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
+        "label": "PropertyListSerializer",
+        "importPath": "api.serializers",
+        "description": "api.serializers",
         "isExtraImport": true,
-        "detail": "rest_framework.permissions",
+        "detail": "api.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "ImageSerializer",
+        "importPath": "api.serializers",
+        "description": "api.serializers",
+        "isExtraImport": true,
+        "detail": "api.serializers",
         "documentation": {}
     },
     {
@@ -428,14 +540,6 @@
     },
     {
         "label": "CustomPermission",
-        "importPath": "users.permissions",
-        "description": "users.permissions",
-        "isExtraImport": true,
-        "detail": "users.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "DenyAll",
         "importPath": "users.permissions",
         "description": "users.permissions",
         "isExtraImport": true,
@@ -554,6 +658,30 @@
         "description": "django.contrib.auth.models",
         "isExtraImport": true,
         "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "SAFE_METHODS",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminUser",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
         "documentation": {}
     },
     {
@@ -863,7 +991,7 @@
         "kind": 5,
         "importPath": "core.settings",
         "description": "core.settings",
-        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"My API\",\n    \"DESCRIPTION\": \"This is my API description\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n}\nCORS_ALLOWED_ORIGINS = [\n    \"http://localhost:3000\",\n    \"http://127.0.0.1:3000\",\n]",
+        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"Real Estate API\",\n    \"DESCRIPTION\": \"API for Real Estate\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n}\nCORS_ALLOWED_ORIGINS = [\n    \"http://localhost:3000\",\n    \"http://127.0.0.1:3000\",\n]",
         "detail": "core.settings",
         "documentation": {}
     },

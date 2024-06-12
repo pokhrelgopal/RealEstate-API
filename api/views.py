@@ -1,17 +1,16 @@
-from .serializers import (
+from api.serializers import (
     AgentSerializer,
     PropertySerializer,
     PropertyListSerializer,
     ImageSerializer,
 )
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Property, Agent, PropertyImage
+from api.models import Property, Agent, PropertyImage
 from rest_framework import status
 from django.db.models import Q
-from users.permissions import CustomPermission, DenyAll
+from users.permissions import CustomPermission
 
 
 class AgentViewSet(ModelViewSet):
@@ -49,7 +48,7 @@ class PropertyViewSet(ModelViewSet):
 
         filters = Q()
         if query:
-            filters &= Q(name__icontains=query) or Q(description__icontains=query)
+            filters &= Q(name__icontains=query) | Q(description__icontains=query)
         if location:
             filters &= (
                 Q(address__icontains=location)

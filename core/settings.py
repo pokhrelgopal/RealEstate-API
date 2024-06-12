@@ -104,8 +104,8 @@ TEMPLATES = [
 ]
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "My API",
-    "DESCRIPTION": "This is my API description",
+    "TITLE": "Real Estate API",
+    "DESCRIPTION": "API for Real Estate",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
