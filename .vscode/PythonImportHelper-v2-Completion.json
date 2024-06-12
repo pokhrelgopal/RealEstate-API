@@ -660,47 +660,6 @@
         "documentation": {}
     },
     {
-        "label": "rest_framework.permissions",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "IsAuthenticated",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "SAFE_METHODS",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "IsAuthenticated",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "IsAdminUser",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
         "label": "ModelViewSet",
         "importPath": "rest_framework.viewsets",
         "description": "rest_framework.viewsets",
@@ -770,6 +729,38 @@
         "description": "users.permissions",
         "isExtraImport": true,
         "detail": "users.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "SAFE_METHODS",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminUser",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
         "documentation": {}
     },
     {
@@ -1176,7 +1167,7 @@
         "kind": 6,
         "importPath": "api.views",
         "description": "api.views",
-        "peekOfCode": "class ReviewViewSet(ModelViewSet):\n    queryset = Review.objects.all()\n    serializer_class = ReviewSerializer\n    permission_classes = [CustomPermission, IsAuthenticated]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            self.permission_classes = []\n        return super().get_permissions()\n    @action(detail=True, methods=[\"GET\"])\n    def get_reviews(self, request, property_id):",
+        "peekOfCode": "class ReviewViewSet(ModelViewSet):\n    queryset = Review.objects.select_related(\"user\", \"property\").all()\n    serializer_class = ReviewSerializer\n    permission_classes = [CustomPermission, IsAuthenticated]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            self.permission_classes = []\n        return super().get_permissions()\n    @action(detail=False, methods=[\"GET\"])\n    def get_reviews(self, request):",
         "detail": "api.views",
         "documentation": {}
     },
@@ -1185,7 +1176,7 @@
         "kind": 6,
         "importPath": "api.views",
         "description": "api.views",
-        "peekOfCode": "class FavoriteViewSet(ModelViewSet):\n    queryset = Favorite.objects.all()\n    serializer_class = FavoriteSerializer\n    permission_classes = [CustomPermission, IsAuthenticated]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            self.permission_classes = []\n        return super().get_permissions()\n    @action(detail=False, methods=[\"GET\"])\n    def get_favorites(self, request):",
+        "peekOfCode": "class FavoriteViewSet(ModelViewSet):\n    queryset = Favorite.objects.select_related(\"user\", \"property\").all()\n    serializer_class = FavoriteSerializer\n    permission_classes = [CustomPermission, IsAuthenticated]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            self.permission_classes = []\n        return super().get_permissions()\n    @action(detail=False, methods=[\"GET\"], permission_classes=[IsAuthenticated])\n    def get_favorites(self, request):",
         "detail": "api.views",
         "documentation": {}
     },

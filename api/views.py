@@ -6,7 +6,6 @@ from api.serializers import (
     PropertySerializer,
     ReviewSerializer,
 )
-import rest_framework.permissions
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -45,8 +44,8 @@ class PropertyViewSet(ModelViewSet):
 
     @action(detail=False, methods=["GET"])
     def search(self, request):
-        query = request.query_params.get("name", "")
-        location = request.query_params.get("location", "")
+        query = request.query_params.get("name")
+        location = request.query_params.get("location")
         min_price = request.query_params.get("min_price")
         max_price = request.query_params.get("max_price")
 
@@ -64,7 +63,7 @@ class PropertyViewSet(ModelViewSet):
         if max_price:
             filters &= Q(price__lte=max_price)
 
-        properties = Property.objects.filter(filters)
+        properties = Property.objects.select_related("user").filter(filters)
         serializer = PropertyListSerializer(properties, many=True)
         return Response(serializer.data)
 
@@ -88,7 +87,7 @@ class ImageViewSet(ModelViewSet):
 
 
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
+    queryset = Review.objects.select_related("user", "property").all()
     serializer_class = ReviewSerializer
     permission_classes = [CustomPermission, IsAuthenticated]
 
@@ -97,15 +96,25 @@ class ReviewViewSet(ModelViewSet):
             self.permission_classes = []
         return super().get_permissions()
 
-    @action(detail=True, methods=["GET"])
-    def get_reviews(self, request, property_id):
-        reviews = Review.objects.filter(property_id=property_id)
+    @action(detail=False, methods=["GET"])
+    def get_reviews(self, request):
+        property_id = request.query_params.get("property_id")
+
+        if not property_id:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"property_id": "This field is required in query params."},
+            )
+
+        reviews = Review.objects.select_related("user", "property").filter(
+            property_id=property_id
+        )
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 
 
 class FavoriteViewSet(ModelViewSet):
-    queryset = Favorite.objects.all()
+    queryset = Favorite.objects.select_related("user", "property").all()
     serializer_class = FavoriteSerializer
     permission_classes = [CustomPermission, IsAuthenticated]
 
@@ -114,8 +123,13 @@ class FavoriteViewSet(ModelViewSet):
             self.permission_classes = []
         return super().get_permissions()
 
-    @action(detail=False, methods=["GET"])
+    @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
     def get_favorites(self, request):
-        favorites = Favorite.objects.filter(user=request.user)
+        print(f"Authenticated user: {request.user}")
+        favorites = Favorite.objects.select_related("user", "property").filter(
+            user=request.user
+        )
+        print(f"Favorites fetched: {favorites}")
+
         serializer = FavoriteSerializer(favorites, many=True)
         return Response(serializer.data)
