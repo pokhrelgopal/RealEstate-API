@@ -347,7 +347,23 @@
         "documentation": {}
     },
     {
+        "label": "SAFE_METHODS",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminUser",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -408,6 +424,30 @@
         "description": "django.db.models",
         "isExtraImport": true,
         "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "CustomPermission",
+        "importPath": "users.permissions",
+        "description": "users.permissions",
+        "isExtraImport": true,
+        "detail": "users.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "DenyAll",
+        "importPath": "users.permissions",
+        "description": "users.permissions",
+        "isExtraImport": true,
+        "detail": "users.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "CustomPermission",
+        "importPath": "users.permissions",
+        "description": "users.permissions",
+        "isExtraImport": true,
+        "detail": "users.permissions",
         "documentation": {}
     },
     {
@@ -625,7 +665,7 @@
         "kind": 6,
         "importPath": "api.models",
         "description": "api.models",
-        "peekOfCode": "class PropertyImage(models.Model):\n    property = models.ForeignKey(\n        Property, on_delete=models.CASCADE, related_name=\"images\"\n    )\n    image = models.ImageField(upload_to=\"property_images/\")\n    created_at = models.DateTimeField(auto_now_add=True)\n    def __str__(self):\n        return self.property.title\n    class Meta:\n        db_table = \"property_image\"",
+        "peekOfCode": "class PropertyImage(models.Model):\n    property = models.ForeignKey(\n        Property, on_delete=models.CASCADE, related_name=\"images\"\n    )\n    image = models.ImageField(upload_to=\"property_images/\")\n    created_at = models.DateTimeField(auto_now_add=True)\n    def __str__(self):\n        return self.property.title\n    def can_change(self, user):\n        return self.property.user == user",
         "detail": "api.models",
         "documentation": {}
     },
@@ -697,7 +737,7 @@
         "kind": 6,
         "importPath": "api.views",
         "description": "api.views",
-        "peekOfCode": "class AgentViewSet(ModelViewSet):\n    queryset = Agent.objects.select_related(\"user\").all()\n    serializer_class = AgentSerializer\n    permission_classes = [IsAuthenticated]\n    def get_permissions(self):\n        if self.action == \"list\" or self.action == \"retrieve\":\n            self.permission_classes = []\n        return super().get_permissions()\n    def update(self, request, *args, **kwargs):\n        agent = self.get_object()",
+        "peekOfCode": "class AgentViewSet(ModelViewSet):\n    queryset = Agent.objects.select_related(\"user\").all()\n    serializer_class = AgentSerializer\n    permission_classes = [CustomPermission]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            self.permission_classes = []\n        return super().get_permissions()\nclass PropertyViewSet(ModelViewSet):\n    queryset = Property.objects.select_related(\"user\").all()",
         "detail": "api.views",
         "documentation": {}
     },
@@ -706,7 +746,7 @@
         "kind": 6,
         "importPath": "api.views",
         "description": "api.views",
-        "peekOfCode": "class PropertyViewSet(ModelViewSet):\n    queryset = Property.objects.select_related(\"user\").all()\n    serializer_class = PropertySerializer\n    permission_classes = [IsAuthenticated]\n    def get_permissions(self):\n        if self.action == \"list\" or self.action == \"retrieve\":\n            self.permission_classes = []\n        return super().get_permissions()\n    def get_serializer_class(self):\n        if self.action == \"list\":",
+        "peekOfCode": "class PropertyViewSet(ModelViewSet):\n    queryset = Property.objects.select_related(\"user\").all()\n    serializer_class = PropertySerializer\n    permission_classes = [CustomPermission]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            self.permission_classes = []\n        return super().get_permissions()\n    def get_serializer_class(self):\n        if self.action == \"list\":",
         "detail": "api.views",
         "documentation": {}
     },
@@ -715,7 +755,7 @@
         "kind": 6,
         "importPath": "api.views",
         "description": "api.views",
-        "peekOfCode": "class ImageViewSet(ModelViewSet):\n    queryset = PropertyImage.objects.all()\n    serializer_class = ImageSerializer\n    # ! LIST RETRIEVE and UPDATE are forbidden because images will only be shown in the property detail view.\n    def list(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_403_FORBIDDEN, data={\"detail\": \"Forbidden.\"})\n    def retrieve(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_403_FORBIDDEN, data={\"detail\": \"Forbidden.\"})\n    def update(self, request, *args, **kwargs):\n        return Response(status=status.HTTP_403_FORBIDDEN, data={\"detail\": \"Forbidden.\"})",
+        "peekOfCode": "class ImageViewSet(ModelViewSet):\n    queryset = PropertyImage.objects.all()\n    serializer_class = ImageSerializer\n    permission_classes = [CustomPermission]\n    def create(self, request, *args, **kwargs):\n        property_id = request.data.get(\"property_id\")\n        if not property_id:\n            return Response(\n                status=status.HTTP_400_BAD_REQUEST,\n                data={\"property_id\": \"This field is required.\"},",
         "detail": "api.views",
         "documentation": {}
     },
@@ -1021,7 +1061,25 @@
         "kind": 6,
         "importPath": "users.permissions",
         "description": "users.permissions",
-        "peekOfCode": "class IsAdminOrSelf(permissions.BasePermission):\n    def has_object_permission(self, request, view, obj):\n        return obj == request.user or request.user.is_staff",
+        "peekOfCode": "class IsAdminOrSelf(permissions.BasePermission):\n    def has_object_permission(self, request, view, obj):\n        return obj == request.user or request.user.is_staff\nclass CustomPermission(permissions.BasePermission):\n    def has_object_permission(self, request, view, obj):\n        if request.method in SAFE_METHODS or request.user.is_superuser:\n            return True\n        if hasattr(obj, \"can_change\") and callable(getattr(obj, \"can_change\")):\n            return obj.can_change(request.user)\n        return False",
+        "detail": "users.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "CustomPermission",
+        "kind": 6,
+        "importPath": "users.permissions",
+        "description": "users.permissions",
+        "peekOfCode": "class CustomPermission(permissions.BasePermission):\n    def has_object_permission(self, request, view, obj):\n        if request.method in SAFE_METHODS or request.user.is_superuser:\n            return True\n        if hasattr(obj, \"can_change\") and callable(getattr(obj, \"can_change\")):\n            return obj.can_change(request.user)\n        return False\nclass DenyAll(permissions.BasePermission):\n    def has_permission(self, request, view):\n        return False",
+        "detail": "users.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "DenyAll",
+        "kind": 6,
+        "importPath": "users.permissions",
+        "description": "users.permissions",
+        "peekOfCode": "class DenyAll(permissions.BasePermission):\n    def has_permission(self, request, view):\n        return False\n    def has_object_permission(self, request, view, obj):\n        return False",
         "detail": "users.permissions",
         "documentation": {}
     },
@@ -1066,7 +1124,7 @@
         "kind": 6,
         "importPath": "users.views",
         "description": "users.views",
-        "peekOfCode": "class UserViewSet(ModelViewSet):\n    queryset = User.objects.all()\n    serializer_class = UserSerializer\n    permission_classes = [IsAuthenticated]\n    def list(self, request, *args, **kwargs):\n        \"\"\"\n        User can only view all users if they are superuser.\n        endpoint [GET] : http://127.0.0.1:8000/api/v1/user/\n        \"\"\"\n        if request.user.is_superuser:",
+        "peekOfCode": "class UserViewSet(ModelViewSet):\n    queryset = User.objects.all()\n    serializer_class = UserSerializer\n    def get_permissions(self):\n        if self.action == \"create\":\n            self.permission_classes = []\n        elif self.action == \"list\":\n            self.permission_classes = [IsAdminUser]\n        elif self.action in [\"retrieve\", \"update\", \"destroy\"]:\n            self.permission_classes = [CustomPermission]",
         "detail": "users.views",
         "documentation": {}
     },

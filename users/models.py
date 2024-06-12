@@ -66,6 +66,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def can_change(self, user):
+        return self.is_superuser or self == user
+
     class Meta:
         db_table = "user"
         verbose_name_plural = "Users"

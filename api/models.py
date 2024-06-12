@@ -49,6 +49,9 @@ class Property(models.Model):
     def __str__(self):
         return self.title
 
+    def can_change(self, user):
+        return self.user == user
+
     class Meta:
         db_table = "property"
         verbose_name_plural = "Properties"
@@ -63,6 +66,9 @@ class PropertyImage(models.Model):
 
     def __str__(self):
         return self.property.title
+
+    def can_change(self, user):
+        return self.property.user == user
 
     class Meta:
         db_table = "property_image"
@@ -82,6 +88,9 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    def can_change(self, user):
+        return self.user.is_superuser or self.user == user
 
     class Meta:
         db_table = "agent"

@@ -1,6 +1,26 @@
 from rest_framework import permissions
+from rest_framework.permissions import SAFE_METHODS
 
 
 class IsAdminOrSelf(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj == request.user or request.user.is_staff
+
+
+class CustomPermission(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS or request.user.is_superuser:
+            return True
+
+        if hasattr(obj, "can_change") and callable(getattr(obj, "can_change")):
+            return obj.can_change(request.user)
+
+        return False
+
+
+class DenyAll(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        return False
