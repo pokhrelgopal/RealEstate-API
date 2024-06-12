@@ -95,3 +95,41 @@ class Agent(models.Model):
     class Meta:
         db_table = "agent"
         verbose_name_plural = "Agents"
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews")
+    property = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="reviews"
+    )
+    rating = models.IntegerField()
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "reviews"
+        verbose_name_plural = "Reviews"
+
+    def __str__(self):
+        return f"{self.user.email} Review on {self.property.title}"
+
+    def can_change(self, user):
+        return self.user == user
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
+    property = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="favorites"
+    )
+
+    class Meta:
+        db_table = "favorites"
+        verbose_name_plural = "Favorites"
+        unique_together = ["user", "property"]
+
+    def __str__(self):
+        return f"{self.user.email} Favorite {self.property.title}"
+
+    def can_change(self, user):
+        return self.user == user

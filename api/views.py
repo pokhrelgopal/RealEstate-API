@@ -1,16 +1,20 @@
 from api.serializers import (
     AgentSerializer,
-    PropertySerializer,
-    PropertyListSerializer,
+    FavoriteSerializer,
     ImageSerializer,
+    PropertyListSerializer,
+    PropertySerializer,
+    ReviewSerializer,
 )
+import rest_framework.permissions
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from api.models import Property, Agent, PropertyImage
+from api.models import Agent, Favorite, Property, PropertyImage, Review
 from rest_framework import status
 from django.db.models import Q
 from users.permissions import CustomPermission
+from rest_framework.permissions import IsAuthenticated
 
 
 class AgentViewSet(ModelViewSet):
@@ -81,3 +85,37 @@ class ImageViewSet(ModelViewSet):
         if request.user == property.user:
             return super().create(request, *args, **kwargs)
         return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "Forbidden."})
+
+
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [CustomPermission, IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            self.permission_classes = []
+        return super().get_permissions()
+
+    @action(detail=True, methods=["GET"])
+    def get_reviews(self, request, property_id):
+        reviews = Review.objects.filter(property_id=property_id)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+
+
+class FavoriteViewSet(ModelViewSet):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    permission_classes = [CustomPermission, IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            self.permission_classes = []
+        return super().get_permissions()
+
+    @action(detail=False, methods=["GET"])
+    def get_favorites(self, request):
+        favorites = Favorite.objects.filter(user=request.user)
+        serializer = FavoriteSerializer(favorites, many=True)
+        return Response(serializer.data)
